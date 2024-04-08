@@ -15,29 +15,15 @@ Swords is a command-line tool developed to replace prohibited stop words in vide
 To run this project, ensure you have the following Python libraries installed:
 
 ```bash
-pip install aiogram asyncio argparse langdetect psutil pynvml SQLAlchemy chardet
+pip install langdetect chardet
 ```
 
 ## Usage
 
-### macOS, Linux
-
-#### Default Startup
-
-```bash
-python3 swords.py C:\Users\arago\Downloads\negative_prompt.md
-```
-
-or
-
-```bash
-python swords.py C:\Users\arago\Downloads\negative_prompt.md
-```
-
 ### Windows
 
 ```bash
-python swords.py "C:\Users\arago\Downloads\negative_prompt.md"
+python swords.py "C:\Users\arago\Downloads\title.srt"
 ```
 
 ## Examples
