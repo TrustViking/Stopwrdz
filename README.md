@@ -1,8 +1,8 @@
-# Term-swords
+# Swords
 
 ## Description
 
-Term Swords is a command-line tool developed to replace prohibited stop words in video titles, specifically tailored for compliance with TikTok's guidelines. 
+Swords is a command-line tool developed to replace prohibited stop words in video titles, specifically tailored for compliance with TikTok's guidelines. 
 
 ## Key Features
 
@@ -25,31 +25,19 @@ pip install aiogram asyncio argparse langdetect psutil pynvml SQLAlchemy chardet
 #### Default Startup
 
 ```bash
-python3 term_swords.py
+python3 swords.py C:\Users\arago\Downloads\negative_prompt.md
 ```
 
 or
 
 ```bash
-python term_swords.py
-```
-
-### Customized Startup
-
-- `-fs, --folder_swords`: Folder for stop-word files
-- `-ns, --pattern_name_swords`: Pattern name for stop-word files
-- `-fl, --folder_logfile`: Folder for log files
-- `-lf, --logfile`: Log file name
-- `-ll, --loglevel`: Logging level
-
-```bash
-python term_swords.py -fs swords -ns swords_ -lf logs.md -ll info
+python swords.py C:\Users\arago\Downloads\negative_prompt.md
 ```
 
 ### Windows
 
 ```bash
-start_term_swords.bat
+python swords.py "C:\Users\arago\Downloads\negative_prompt.md"
 ```
 
 ## Examples
