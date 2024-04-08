@@ -1,0 +1,22 @@
+
+{
+    "//": "this is a configuration file in json format",
+
+    "folder_logfile": "logs",
+    "logfile": "log.md",
+    "loglevel": "DEBUG",
+
+    "folder_vocabs": "vocab_swords",
+    "pattern_name_vocab": "vocab_",
+
+    "replace_dict": {"a": "@", "e":"€", "i":"!", "o":"0", "s":"$", "u":"и", "w":"vv", "r":"®", "c":"©",
+                           "а": "@", "е":"€", "и":"N", "й":"N", "о":"0", "р":"₽"},
+
+
+    "punct": ["'", "\"",  "!", "?","-", ",", ".", ":", ";"],
+
+    "new_name_title": "swords_title.srt"
+
+}
+
+
