@@ -23,7 +23,7 @@ pip install langdetect chardet
 ### Windows
 
 ```bash
-python swords.py "C:\Users\arago\Downloads\title.srt"
+python swords.py "C:\Users\user\Downloads\title.srt"
 ```
 
 ## Examples

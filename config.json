@@ -6,16 +6,32 @@
     "logfile": "log.md",
     "loglevel": "DEBUG",
 
-    "folder_vocabs": "vocab_swords",
+    "folder_vocabs": "vocabs",
     "pattern_name_vocab": "vocab_",
 
-    "replace_dict": {"a": "@", "e":"€", "i":"!", "o":"0", "s":"$", "u":"и", "w":"vv", "r":"®", "c":"©",
-                           "а": "@", "е":"€", "и":"N", "й":"N", "о":"0", "р":"₽"},
-
-
     "punct": ["'", "\"",  "!", "?","-", ",", ".", ":", ";"],
+    
+    "replace_dict": {
+        "a": "@",
+        "e": "\u20AC",
+        "i": "!",
+        "o": "0",
+        "s": "$",
+        "u": "\u0438",
+        "w": "vv",
+        "r": "\u00AE",
+        "c": "\u00A9",
+        "\u0430": "@",
+        "\u0435": "\u20AC",
+        "\u0451": "\u20AC",
+        "\u0438": "N",
+        "\u0439": "N",
+        "\u043E": "0",
+        "\u0440": "\u20BD"
+    },
 
     "new_name_title": "swords_title.srt"
+
 
 }
 
