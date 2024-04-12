@@ -87,9 +87,14 @@ class Filtering(BaseClass):
         # а также как есть (особенно для названий: YouTube...)
         case_sensitive_words = set()
         for word in set(filter(lambda x: x.strip(), stop_words)):
-             # Проверка, состоит ли "слово" из нескольких слов
+            
+            # Проверка, состоит ли "слово" из нескольких слов
             if ' ' in word:
                 continue  # Пропустить, если "слово" на самом деле фраза
+            
+            # удаляем из слова все знаки препинания и пробелы
+            word = "".join(filter(str.isalnum, word))
+
             case_sensitive_words.add(word)
             case_sensitive_words.add(word.lower())
             case_sensitive_words.add(word.capitalize())            
@@ -133,10 +138,15 @@ class Filtering(BaseClass):
 
 
     # определяем язык буффера
-    # возвращаем строку 'en', 'ru', 'ro' or None
+    # возвращает строку 'en', 'ru', 'ro'... or None
     def detection_lang(self, buffer: List[str]) -> Union[str, None]:
         """
         Определяет язык текста в буфере с помощью библиотеки langdetect.
+        
+        langdetect поддерживает 55 языков (коды ISO 639-1):
+        af, ar, bg, bn, ca, cs, cy, da, de, el, en, es, et, fa, fi, fr, gu, he,
+        hi, hr, hu, id, it, ja, kn, ko, lt, lv, mk, ml, mr, ne, nl, no, pa, pl,
+        pt, ro, ru, sk, sl, so, sq, sv, sw, ta, te, th, tl, tr, uk, ur, vi, zh-cn, zh-tw
 
         Args:
             buffer (List[str]): Список строк текста.

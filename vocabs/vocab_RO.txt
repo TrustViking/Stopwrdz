@@ -2,10 +2,9 @@ Abonament
 Abonamente
 Abonare
 Abonat
-Abonează-te
+Aboneazăte
 Addict
 Agresiune
-
 Agresivitate
 Alcoolic
 Alcoolici
@@ -74,7 +73,7 @@ Dependenți
 Depravare
 Desfrânare
 Desfrâu
-Dezbracă-te
+Dezbracăte
 Dezbrăcare
 Dezbrăcarea
 Dezgolire
@@ -164,7 +163,6 @@ Mor
 Moron
 Mort
 Morți
-Morți.
 Mudaks
 Muri
 Narcotice
@@ -309,7 +307,7 @@ abonament
 abonamente
 abonare
 abonat
-abonează-te
+aboneazăte
 addict
 agresiune
 agresivitate
@@ -380,7 +378,7 @@ dependenți
 depravare
 desfrânare
 desfrâu
-dezbracă-te
+dezbracăte
 dezbrăcare
 dezbrăcarea
 dezgolire
@@ -470,7 +468,6 @@ mor
 moron
 mort
 morți
-morți.
 mudaks
 muri
 narcotice
