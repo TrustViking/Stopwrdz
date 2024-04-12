@@ -6,7 +6,7 @@ from os.path import split, splitext, join,  exists
 from typing import List, Union
 #
 from app_env.base_class import BaseClass
-
+from app_env.decorators import safe_execute
 
 class Saving(BaseClass):
     """
@@ -42,32 +42,36 @@ class Saving(BaseClass):
         Returns:
             str: Уникальный полный путь к файлу.
         """
-        
+        # имя метода            
         name_method = self.get_current_method_name()
-        
-        # Разделение пути на директорию и имя файла
-        directory, filename = split(file_path)
 
-        # Разделение имени файла на основное имя и расширение 
-        # (base_name: swords_title, extension: .srt)
-        base_name, extension = splitext(filename)
-        
-        # Переменная для хранения уникального имени файла
-        unique_file_name = filename
-        # Счетчик для добавления цифры к имени файла
-        counter = 2
+        @safe_execute(logger=self.logger, name_method=f'[{self.cls_name}|{name_method}]')
+        def  _get_unique_file_path():
+            
+            # Разделение пути на директорию и имя файла
+            directory, filename = split(file_path)
 
-        # Проверка существования файла по заданному пути
-        while exists(join(directory, unique_file_name)):
-            # Формирование нового имени файла с добавлением цифры к основному имени
-            unique_file_name = f"{base_name}_{counter}{extension}"
-            counter += 1
+            # Разделение имени файла на основное имя и расширение 
+            # (base_name: swords_title, extension: .srt)
+            base_name, extension = splitext(filename)
+            
+            # Переменная для хранения уникального имени файла
+            unique_file_name = filename
+            # Счетчик для добавления цифры к имени файла
+            counter = 2
 
-        # Формирование полного пути к уникальному файлу
-        unique_file_path = join(directory, unique_file_name)
+            # Проверка существования файла по заданному пути
+            while exists(join(directory, unique_file_name)):
+                # Формирование нового имени файла с добавлением цифры к основному имени
+                unique_file_name = f"{base_name}_{counter}{extension}"
+                counter += 1
 
-        return unique_file_path
+            # Формирование полного пути к уникальному файлу
+            unique_file_path = join(directory, unique_file_name)
 
+            return unique_file_path
+        return _get_unique_file_path()
+    
 
     # определяем кодировку буффера 
     def encoding_buffer(self,  buffer: Union[BytesIO, list, str, bytes]) -> Union[str, None]:
@@ -81,7 +85,7 @@ class Saving(BaseClass):
         Returns:
             Union[str, None]: Кодировка буфера, если удалось определить, None в противном случае.
         """                
-        # Получаем имя текущего метода            
+        # имя метода            
         name_method = self.get_current_method_name()
 
         # Определяем тип буфера и приводим его к форме bytes
@@ -136,7 +140,9 @@ class Saving(BaseClass):
             Union[str, None]: Путь к файлу, если запись прошла успешно, None в случае ошибки.
         """     
 
+        # имя метода            
         name_method = self.get_current_method_name()
+
                
         if isinstance(buffer, str):
             try:

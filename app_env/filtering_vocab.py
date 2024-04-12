@@ -4,9 +4,7 @@ from os.path import basename, dirname, isfile, exists
 from typing import List, Optional, Dict, Union
 from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
-import inspect
 
-from app_env.systems_methods import SysMethods
 from app_env.saving import Saving
 from app_env.reading import Reading
 from app_env.base_class import BaseClass
@@ -30,13 +28,10 @@ class Filtering(BaseClass):
         # переназначаем родительский атрибут cls_name 
         self.cls_name = self.__class__.__name__
 
-        self.config = self.read_config(self.config_path)
         # Reading
         self.reading = Reading()
         # Saving
         self.saving = Saving()
-        # SysMethods
-        self.sysmethods = SysMethods()
 
 
     def filtering_vocab(self, file_path: str):
@@ -75,7 +70,7 @@ class Filtering(BaseClass):
             return None
         
 
-        # чтение файла с диска в память построчно (т.е. список слов)
+        # чтение файла с диска в память построчно (т.е. список стоп-слов)
         stop_words = self.reading.read_file_to_buffer_lines(file_path, encoding)
         if not stop_words:
             msg = (
@@ -166,13 +161,16 @@ class Filtering(BaseClass):
             return None
 
 
-    def diction_swords(self, file_path: str, replace_dict: Dict[str, str]) -> Union[Dict[str, str], None]:
+    def diction_swords(self, 
+                       file_path: str, 
+                       replace_dictionary: Dict[str, str]
+                       ) -> Union[Dict[str, str], None]:
         """
         Загружает слова из файла и создает словарь стоп-слов и их замен.
 
         Args:
             file_path (str): Полный путь к файлу словаря стоп-слов
-            replace_dict (Dict[str, str]): Словарь для замены символов.
+            replace_dictionary (Dict[str, str]): Словарь для замены символов.
 
         Returns:
             Union[Dict[str, str], None]: Словарь, 
@@ -209,10 +207,10 @@ class Filtering(BaseClass):
         
         msg = (
                 f'\n[{self.cls_name}|{name_method}]'
-                f'\nЗначения из словаря replace_dict:'
+                f'\nЗначения из словаря замены букв (replace_dictionary):'
                 )
         print(msg)
-        for key, value in replace_dict.items():
+        for key, value in replace_dictionary.items():
             print(f"Ключ: {key}, Значение: {value}")
 
         try:
@@ -223,7 +221,7 @@ class Filtering(BaseClass):
                     word = line.strip()
                     
                     # Производим замену символов
-                    replaced_word = "".join([replace_dict.get(char, char) for char in word])
+                    replaced_word = "".join([replace_dictionary.get(char, char) for char in word])
                     
                     # Сохраняем в словаре
                     word_diction[word] = replaced_word
@@ -239,7 +237,7 @@ class Filtering(BaseClass):
     def training_vocab(self, 
                        buffer_title: List[str],  # Буфер в кодировке UTF-8 в виде списка строк
                        path_pattern_vocab: str,  # Шаблон пути к словарю по языкам
-                       replace_dict: Dict[str, str],  # Словарь для замены символов  
+                       replace_dictionary: Dict[str, str],  # Словарь для замены символов  
                         )-> Optional[Dict[str, str]]:
         """
         Выбирает и подготавливает словарь стоп-слов 
@@ -249,7 +247,7 @@ class Filtering(BaseClass):
             self: Экземпляр класса.
             buffer_title (BytesIO): Буфер с данными титров в формате BytesIO.
             path_pattern_vocab (str): Шаблон пути к словарю по языкам.
-            replace_dict (Dict[str, str]): Словарь для замены символов.
+            replace_dictionary (Dict[str, str]): Словарь для замены символов.
 
         Returns:
             Optional[Dict[str, str]]: Словарь стоп-слов и их замен.
@@ -284,7 +282,6 @@ class Filtering(BaseClass):
 
         # подготавливаем (фильтруем) файл словарь стоп-слов 
         # (убираем повторы, сортируем и перезаписываем)
-        # full_path_swords = self.filtering.filtering_vocab(path_vocab)
         full_path_vocab = self.filtering_vocab(path_vocab)
         if not full_path_vocab:
             msg = (f'\n*ERROR [{self.cls_name}|{name_method}]' 
@@ -295,7 +292,7 @@ class Filtering(BaseClass):
             return None
         
         # создаем словарь стоп-слов и их замен
-        swords = self.diction_swords(full_path_vocab, replace_dict)
+        swords = self.diction_swords(full_path_vocab, replace_dictionary)
         if not swords:
             msg = (f'\n*ERROR [{self.cls_name}|{name_method}]'
                 f'\n*Не создали словарь стоп-слов: {swords}'

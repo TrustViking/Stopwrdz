@@ -29,7 +29,7 @@ class Start(BaseClass):
         #
         # config
         self.config = self.read_config(self.config_path)
-        self.replace_dict = self.config.get('replace_dict')
+        self.replace_dict = self.config.get('replace_dictionary')
         self.punct = self.config.get('punct')
         self.new_name_title = self.config.get('new_name_title')
         self.folder_vocabs = self.config.get('folder_vocabs')
@@ -292,7 +292,6 @@ def main():
             ) 
     print(msg)
 
-# Запускаем главную функцию
 if __name__ == "__main__":
     main()
 

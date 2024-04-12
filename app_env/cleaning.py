@@ -1,12 +1,10 @@
 
 
-import shutil
-from os.path import join, getmtime, isdir
-from os.path import isfile, abspath, dirname, splitext
-
+from os.path import join, getmtime, dirname, splitext
 from os import listdir, remove
-from typing import Union, List
+from typing import Union
 from datetime import datetime as dt
+
 from app_env.base_class import BaseClass
 
 

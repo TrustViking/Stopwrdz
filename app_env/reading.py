@@ -1,11 +1,11 @@
 
-
 import chardet
 from os.path import basename, dirname
 from typing import List, Optional
 
 from app_env.base_class import BaseClass
 from app_env.saving import Saving
+
 
 class Reading(BaseClass):
     """
@@ -90,6 +90,7 @@ class Reading(BaseClass):
             Optional[List[str]]: Содержимое файла в виде списка строк в кодировке UTF-8, 
             если чтение прошло успешно, None в противном случае.
         """        
+        
         name_method = self.get_current_method_name()
 
         try:
@@ -102,9 +103,10 @@ class Reading(BaseClass):
             return None
         
         encoding_buffer = self.saving.encoding_buffer(buffer)
-        msg = (f'\n[{self.cls_name}|{name_method}]'
+        msg = ( f'\n[{self.cls_name}|{name_method}]'
                 f'\nБуфер в кодировке: [{encoding_buffer}]'
                 f'\nТип буфера: [{type(buffer)}]'
+                f'\nВсего в буфере [{len(buffer)}] строк'
                 )
         print(msg)
 

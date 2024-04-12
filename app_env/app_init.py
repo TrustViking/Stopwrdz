@@ -54,7 +54,7 @@ class ConfigInit:
 class LogInit(ConfigInit):
     def __init__(self):
         """
-        Инициализатор класса LogInitializer
+        Инициализатор класса LogInit
         - `%(name)s`: Имя логгера (канал логирования)
         - `%(levelno)s`: Числовой уровень логирования для сообщения (DEBUG, INFO, WARNING, ERROR, CRITICAL)
         - `%(levelname)s`: Текстовый уровень логирования для сообщения ("DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL")

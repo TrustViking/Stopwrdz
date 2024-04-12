@@ -6,6 +6,7 @@ from . import reading
 from . import saving
 from . import cleaning
 from . import base_class
+from . import decorators
 
 
 
