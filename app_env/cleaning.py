@@ -1,6 +1,6 @@
 
 
-from os.path import join, getmtime, dirname, splitext
+from os.path import join, getmtime, dirname, splitext, isfile
 from os import listdir, remove
 from typing import Union
 from datetime import datetime as dt
@@ -99,10 +99,19 @@ class Cleaning(BaseClass):
             
             # если лог старше time_delete
             if current_time - file_mod_time > time_delete:
-                # удаляем лог-файл
-                remove(full_path)
-                # записываем полный путь удаленного лог-файла в список
-                deleted_logs.append(full_path)
+                if isfile(full_path):
+                    # удаляем лог-файл
+                    remove(full_path)
+                    # записываем полный путь удаленного лог-файла в список
+                    deleted_logs.append(full_path)
+                else: 
+                    msg = (
+                            f'\n*ERROR [{self.cls_name}|{name_method}]'
+                            f'\n*Не смогли удалить файл, так это не файл'
+                            f'\n*full_path: [{full_path}]'
+                            )
+                    print(msg)
+                    self.logger.error(msg)
         
         if not deleted_logs:
             msg = (

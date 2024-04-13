@@ -6,6 +6,5 @@ from . import saving
 from . import cleaning
 from . import base_class
 from . import decorators
-
-
+from . import vocabs_safe
 

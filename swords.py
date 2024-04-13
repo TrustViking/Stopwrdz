@@ -1,16 +1,16 @@
 
 from os.path import split, join
-from sys import path
 from typing import List, Optional, Dict, Union
 from io import BytesIO
 
+from app_env.decorators import safe_execute
 from app_env.systems_methods import SysMethods
 from app_env.filtering_vocab import Filtering
 from app_env.reading import Reading
 from app_env.saving import Saving
 from app_env.cleaning import Cleaning
 from app_env.base_class import BaseClass
-
+#
 
 class Start(BaseClass):
     """
@@ -32,12 +32,7 @@ class Start(BaseClass):
         self.replace_dict = self.config.get('replace_dictionary')
         self.punct = self.config.get('punct')
         self.new_name_title = self.config.get('new_name_title')
-        self.folder_vocabs = self.config.get('folder_vocabs')
-        self.pattern_name_vocab = self.config.get('pattern_name_vocab')
-        
-        # создаем рабочий путь к папке, где хранятся файлы словари стоп-слов на разных языках
-        self.path_vocab_pattern = join(path[0], self.folder_vocabs, self.pattern_name_vocab)
-        
+
         # SysMethods
         self.sysmethods = SysMethods()
         # Путь к файлу титров из командной строки
@@ -55,7 +50,8 @@ class Start(BaseClass):
     def string_disassembled(self, 
                             line: str, 
                             diction: Dict[str, str], 
-                            punctuation: List[str]) -> Optional[str]:
+                            punctuation: List[str]
+                            ) -> Optional[str]:
         """
         Разбирает строку на слова, заменяет стоп-слова и возвращает строку 
         с учетом пунктуации.
@@ -69,45 +65,48 @@ class Start(BaseClass):
         Returns:
             Optional[str]: Строка после разбора, замены стоп-слов и восстановления пунктуации.
             Возвращает None в случае ошибки.
-        """        
+        """   
+        name_method = self.get_current_method_name()
+        @safe_execute(logger=self.logger, name_method=f'[{self.cls_name}|{name_method}]')
+        def  _string_disassembled():
+            puncts=[] # список кортежей знаков препинания и их порядковый номер в строке
+            list_chars_without_punct = [] # список символов строки без знаков препинания
+            
+            # убираем знаки препинания из строки и запоминаем их расположение
+            for i, char in enumerate(line):
+                if char in punctuation:
+                    puncts.append((i, char))
+                else:
+                    list_chars_without_punct.append(char)
 
-        puncts=[] # список кортежей знаков препинания и их порядковый номер в строке
-        list_chars_without_punct = [] # список символов строки без знаков препинания
-        
-        # убираем знаки препинания из строки и запоминаем их расположение
-        for i, char in enumerate(line):
-            if char in punctuation:
-                puncts.append((i, char))
-            else:
-                list_chars_without_punct.append(char)
+            # строка из списка символов строки без знаков препинания
+            new_line = ''.join(list_chars_without_punct)
 
-        # строка из списка символов строки без знаков препинания
-        new_line = ''.join(list_chars_without_punct)
+            # Разбиваем строку на список слов (по пробелам)
+            # Максимальная глубина разбора строки
+            words = [word.strip() for word in new_line.split()] 
+            
+            # проверяем каждое слово из строки без знаков препинания на совпадение 
+            # в словаре стоп-слов и заменяем его
+            new_words = [diction.get(word, word) for word in words]
+            
+            ## начинаем собирать строку обратно
+            # после замены стоп-слов соединяем через пробел список слов в строку
+            new_string = ' '.join(new_words)
 
-        # Разбиваем строку на список слов (по пробелам)
-        # Максимальная глубина разбора строки
-        words = [word.strip() for word in new_line.split()] 
-        
-        # проверяем каждое слово из строки без знаков препинания на совпадение 
-        # в словаре стоп-слов и заменяем его
-        new_words = [diction.get(word, word) for word in words]
-        
-        ## начинаем собирать строку обратно
-        # после замены стоп-слов соединяем через пробел список слов в строку
-        new_string = ' '.join(new_words)
+            # строку переводим в список символов
+            symbols = list(new_string)
 
-        # строку переводим в список символов
-        symbols = list(new_string)
-
-        # добавляем в список символов на сохраненные позиции пунктуацию 
-        if puncts:
-            for i, punct in puncts:
-                symbols.insert(i, punct)
-        
-        # список символов с пунктуацией переводим в строку
-        string_puncts = ''.join(symbols)
-        
-        return string_puncts
+            # добавляем в список символов на сохраненные позиции пунктуацию 
+            if puncts:
+                for i, punct in puncts:
+                    symbols.insert(i, punct)
+            
+            # список символов с пунктуацией переводим в строку
+            string_puncts = ''.join(symbols)
+            
+            return string_puncts
+        return _string_disassembled()
 
 
     def replace_swords_buffer(self, 
@@ -162,11 +161,9 @@ class Start(BaseClass):
         return new_buf
 
 
-    ######
     ## обработчик файла титров
     def process_title(self, 
                       file_path: str,  # Путь к исходному файлу титров
-                      path_vocab_pattern: str,  # Шаблон пути к словарю по языкам
                       replace_dict: Dict[str, str],  # Словарь для замены символов
                       punctuation: List[str],  # Список знаков пунктуации
                       nfile: str  # Имя нового файла титров
@@ -214,9 +211,7 @@ class Start(BaseClass):
             return None 
             
         # Выбирает и подготавливает словарь стоп-слов с учетом языка файла титров
-        swords = self.filtering.training_vocab(buffer_title, 
-                                                path_vocab_pattern, 
-                                                replace_dict)
+        swords = self.filtering.training_vocab(buffer_title, replace_dict)
         if not swords:
             msg = (
                     f'\n*ERROR [{self.cls_name}|{name_method}]'
@@ -261,7 +256,6 @@ def main():
     print(msg)
 
     full_path_title = start.srt_file
-    path_vocab_pattern = start.path_vocab_pattern
     replace_dictionary = start.replace_dict
     punctuation = start.punct
     new_name_title = start.new_name_title
@@ -272,7 +266,6 @@ def main():
 
     # выполняем основной скрипт
     full_path_saving_title = start.process_title(full_path_title, 
-                                                path_vocab_pattern, 
                                                 replace_dictionary, 
                                                 punctuation, 
                                                 new_name_title)
@@ -291,6 +284,10 @@ def main():
             f'\n# full_path_saving_title {full_path_saving_title}'
             ) 
     print(msg)
+
+    # Пауза в конце выполнения скрипта перед закрытием окна
+    input("\nНажмите клавишу <Enter> для выхода...")
+
 
 if __name__ == "__main__":
     main()

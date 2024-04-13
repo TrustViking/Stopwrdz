@@ -1,8 +1,8 @@
 
 
+from typing import Optional, Dict
 from logging import Logger, DEBUG, getLogger, Formatter, FileHandler 
 from sys import argv
-from typing import Optional, Dict
 from os.path import join, isfile, abspath, dirname, splitext
 from json import load, JSONDecodeError
 from os import makedirs
@@ -74,8 +74,10 @@ class LogInit(ConfigInit):
 
         """
         super().__init__()
-        # точка входа скрипта
+
+        ##### точка входа скрипта
         self.entry_point = abspath(argv[0])
+
         # переназначаем родительский атрибут cls_name 
         self.cls_name = self.__class__.__name__
 

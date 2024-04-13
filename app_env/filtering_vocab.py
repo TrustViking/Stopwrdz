@@ -1,10 +1,11 @@
 
 
 from os.path import basename, dirname, isfile, exists
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict
 from langdetect import detect
 from langdetect.lang_detect_exception import LangDetectException
 
+from app_env.vocabs_safe import Vocabs
 from app_env.saving import Saving
 from app_env.reading import Reading
 from app_env.base_class import BaseClass
@@ -32,9 +33,11 @@ class Filtering(BaseClass):
         self.reading = Reading()
         # Saving
         self.saving = Saving()
+        # Vocabs
+        self.vocabs = Vocabs()
 
 
-    def filtering_vocab(self, file_path: str):
+    def filtering_vocab(self, file_path: str)-> Optional[str]:
         """
         Определяем кодировку файла словаря стоп-слов, 
         загружает файл стоп-слов в память, 
@@ -133,13 +136,14 @@ class Filtering(BaseClass):
                     )
             print(msg)
             self.logger.error(msg)
+            return None
         
         return file_path
 
 
     # определяем язык буффера
     # возвращает строку 'en', 'ru', 'ro'... or None
-    def detection_lang(self, buffer: List[str]) -> Union[str, None]:
+    def detection_lang(self, buffer: List[str]) -> Optional[str]:
         """
         Определяет язык текста в буфере с помощью библиотеки langdetect.
         
@@ -152,7 +156,7 @@ class Filtering(BaseClass):
             buffer (List[str]): Список строк текста.
 
         Returns:
-            Union[str, None]: Код языка текста (например, 'en', 'ru', 'ro') 
+            Optional[str]: Код языка текста (например, 'en', 'ru', 'ro') 
             или None, если язык не удалось определить.
         """        
         name_method = self.get_current_method_name()
@@ -174,7 +178,7 @@ class Filtering(BaseClass):
     def diction_swords(self, 
                        file_path: str, 
                        replace_dictionary: Dict[str, str]
-                       ) -> Union[Dict[str, str], None]:
+                       ) -> Optional[Dict[str, str]]:
         """
         Загружает слова из файла и создает словарь стоп-слов и их замен.
 
@@ -183,7 +187,7 @@ class Filtering(BaseClass):
             replace_dictionary (Dict[str, str]): Словарь для замены символов.
 
         Returns:
-            Union[Dict[str, str], None]: Словарь, 
+            Optional[Dict[str, str]]: Словарь, 
             где ключ - исходное слово, 
             значение - измененное слово.
             None, если произошла ошибка при чтении файла или определении кодировки.
@@ -246,7 +250,6 @@ class Filtering(BaseClass):
 
     def training_vocab(self, 
                        buffer_title: List[str],  # Буфер в кодировке UTF-8 в виде списка строк
-                       path_pattern_vocab: str,  # Шаблон пути к словарю по языкам
                        replace_dictionary: Dict[str, str],  # Словарь для замены символов  
                         )-> Optional[Dict[str, str]]:
         """
@@ -270,7 +273,8 @@ class Filtering(BaseClass):
         if not language:
             msg = (
                     f'\n*ERROR [{self.cls_name}|{name_method}]'
-                    f'\n*Не определили язык титров language: [{language}]'
+                    f'\n*Не определили язык титров'
+                    f'\n*language: [{language}]'
                     )
             print(msg)
             self.logger.error(msg) 
@@ -278,18 +282,23 @@ class Filtering(BaseClass):
         
         msg = (
                 f'\n[{self.cls_name}|{name_method}]'
+                f'\nОпределили язык титров'
                 f'\nlanguage: [{language}]'
                 )
         print(msg)
         
         # формируем путь к словарю исходя из определенного языка титров
-        path_vocab = path_pattern_vocab+language.upper()+'.txt'
-        msg = (
-                f'\n[{self.cls_name}|{name_method}]'
-                f'\npath_vocab: [{path_vocab}]'
-                )
-        print(msg)
-
+        path_vocab = self.vocabs.form_path_dictionary_language(language)
+        if not path_vocab:
+            msg = (
+                    f'\n*ERROR [{self.cls_name}|{name_method}]'
+                    f'\n*Язык словаря: [{language}]'
+                    f'\n*Ошибочный путь к словарю: [{path_vocab}]'
+                    )
+            print(msg)
+            self.logger.error(msg) 
+            return None
+      
         # подготавливаем (фильтруем) файл словарь стоп-слов 
         # (убираем повторы, сортируем и перезаписываем)
         full_path_vocab = self.filtering_vocab(path_vocab)
