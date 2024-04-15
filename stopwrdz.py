@@ -262,7 +262,7 @@ def main():
     config_path = start.config_path
 
     # удаляем старые логги
-    print(f'Всего удалили [{start.cleaning.delete_logs(config_path, 1000)}] старых файлов журналов логгов')
+    print(f'Всего удалили [{start.cleaning.delete_logs(config_path)}] старых файлов журналов логгов')
 
     # выполняем основной скрипт
     full_path_saving_title = start.process_title(full_path_title, 
