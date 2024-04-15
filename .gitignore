@@ -1,5 +1,9 @@
 stopwrdz.code-workspace
+stopwrdz.exe
+stopwrdz.spec
 #
-# при запуске скрипта папка для логов, создастся автоматически
 /logs
 /draft
+/build
+/dist
+/setup_install

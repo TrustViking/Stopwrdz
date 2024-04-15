@@ -1,0 +1,3 @@
+[submodule "stopwrdz_setup"]
+	path = stopwrdz_setup
+	url = https://github.com/TrustViking/stopwrdz_setup.git
