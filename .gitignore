@@ -1,8 +1,5 @@
 stopwrdz.code-workspace
-stopwrdz.exe
-stopwrdz.spec
-stopwrdz.iss
-befor_install.txt
+
 #
 /logs
 /draft
