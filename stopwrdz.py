@@ -1,4 +1,5 @@
-
+#!/usr/bin/env python3
+#
 from os.path import split, join
 from typing import List, Optional, Dict, Union
 from io import BytesIO
