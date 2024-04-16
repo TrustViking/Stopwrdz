@@ -69,7 +69,7 @@ TIS-620 (Thai)
 
 ```bash
 python stopwrdz.py "C:\Users\user\Downloads\title.srt"
-python3 stopwrdz.py "C:\Users\user\Downloads\title.srt"
+python3 stopwrdz.py C:\Users\user\Downloads\title.srt
 ```
 
 ## Examples
