@@ -72,5 +72,4 @@ This project is licensed under the MIT License.
 
 For more information or questions, please feel free to reach out:
 
-- **Contact Person**: Osvald
-- **Email**: [trustvlking@gmail.com](mailto: trustvlking@gmail.com)
+
