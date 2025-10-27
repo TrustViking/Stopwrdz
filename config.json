@@ -9,8 +9,6 @@
     "folder_vocabs": "vocabs",
     "pattern_name_vocab": "vocab_",
 
-    "punct": ["'", "\"",  "!", "?","-", "—", ",", ".", ":", ";"],
-    
     "replace_dictionary": {
         "a": "@",
         "e": "\u20AC",

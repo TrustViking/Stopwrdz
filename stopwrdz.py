@@ -39,7 +39,7 @@ class Start(BaseClass):
         # читаем конфигурацию
         self.config = self.read_config(self.config_path)
         self.replace_dict = self.config.get('replace_dictionary')
-        self.punct = self.config.get('punct')
+        # self.punct = self.config.get('punct')
         self.new_name_title = self.config.get('new_name_title')
 
         # инициализируем вспомогательные классы
@@ -50,12 +50,7 @@ class Start(BaseClass):
         self.cleaning = Cleaning()
         self.filtering = Filtering()
 
-    def string_disassembled(
-        self,
-        line: str,
-        diction: Dict[str, str],
-        punctuation: List[str],
-    ) -> Optional[str]:
+    def string_disassembled(self, line: str, diction: Dict[str, str]) -> Optional[str]:
         """
         Разбирает строку на слова, заменяет стоп‑слова и возвращает
         строку без знаков пунктуации.  Время и номера кадров не должны
@@ -67,9 +62,6 @@ class Start(BaseClass):
             Входная строка для обработки.
         diction : Dict[str, str]
             Словарь для замены стоп‑слов.
-        punctuation : List[str]
-            Список символов, которые считаются знаками пунктуации и
-            подлежат удалению.
 
         Returns
         -------
@@ -131,27 +123,31 @@ class Start(BaseClass):
             n = len(s)
 
             # локальная функция для проверки, является ли символ буквой
-            def is_letter(ch: str) -> bool:
-                return ch.isalpha()
+            def is_letter(char: str) -> bool:
+                return char.isalpha()
+            # локальная функция для проверки, является ли символ буквой или цифрой
+            def is_word_char(char: str) -> bool:
+                return char.isalnum()
 
-            for i, ch in enumerate(s):
-                prev_ch = s[i - 1] if i > 0 else ''
-                next_ch = s[i + 1] if i + 1 < n else ''
 
-                if ch in dash_chars:
-                    # сохраняем дефис/тире только если он между буквами без пробелов
-                    if is_letter(prev_ch) and is_letter(next_ch) and prev_ch != ' ' and next_ch != ' ':
+            for i, char in enumerate(s):
+                prev_char = s[i - 1] if i > 0 else ''
+                next_char = s[i + 1] if i + 1 < n else ''
+
+                if char in dash_chars:
+                    # сохраняем дефис/тире только если он между буквами или цифрами без пробелов
+                    if is_word_char(prev_char) and is_word_char(next_char) and prev_char != ' ' and next_char != ' ':
                         out_chars.append('-')  # нормализуем на простой дефис
                     # иначе — игнорируем (не добавляем)
                     continue
 
                 # фильтрация остальных символов пунктуации
-                cat = unicodedata.category(ch)
+                cat = unicodedata.category(char)
                 # пропускаем символы пунктуации, если они не исключены
-                if cat.startswith('P') and ch not in punct_exceptions:
+                if cat.startswith('P') and char not in punct_exceptions:
                     continue  # пропускаем пунктуационные символы
 
-                out_chars.append(ch)
+                out_chars.append(char)
 
             # Собранная строка без пунктуации и лишних тире
             line_no_punct = ''.join(out_chars)
@@ -179,7 +175,7 @@ class Start(BaseClass):
         self,
         buf: Union[str, List[str], BytesIO],
         diction: Dict[str, str],
-        punctuation: List[str],
+        # punctuation: List[str],
     ) -> Optional[List[str]]:
         """
         Заменяет стоп‑слова в буфере строк.  Таймкоды и номера кадров
@@ -210,9 +206,7 @@ class Start(BaseClass):
                 new_buf.append(line)
                 continue
             # обрабатываем только текстовые строки
-            string_after_replace = self.string_disassembled(
-                line, diction, punctuation
-            )
+            string_after_replace = self.string_disassembled(line, diction)
             if string_after_replace is None:
                 msg = (
                     f'\n*ERROR [{self.cls_name}|{name_method}]'
@@ -229,11 +223,11 @@ class Start(BaseClass):
 
         return new_buf
 
-    def process_title(
+    def process_title( 
         self,
         file_path: str,
         replace_dict: Dict[str, str],
-        punctuation: List[str],
+        # punctuation: List[str],
         nfile: str,
     ) -> Optional[str]:
         """
@@ -276,7 +270,7 @@ class Start(BaseClass):
             return None
 
         # заменяем стоп‑слова в буфере
-        new_buf = self.replace_swords_buffer(buffer_title, swords, punctuation)
+        new_buf = self.replace_swords_buffer(buffer_title, swords)
         if not new_buf:
             msg = (
                 f'\n*ERROR [{self.cls_name}|{name_method}]'
@@ -304,7 +298,7 @@ def main() -> None:
 
     full_path_title = start.srt_file
     replace_dictionary = start.replace_dict
-    punctuation = start.punct
+    # punctuation = start.punct
     new_name_title = start.new_name_title
     config_path = start.config_path
 
@@ -315,7 +309,7 @@ def main() -> None:
 
     # выполняем основной скрипт
     full_path_saving_title = start.process_title(
-        full_path_title, replace_dictionary, punctuation, new_name_title
+        full_path_title, replace_dictionary, new_name_title
     )
     if not full_path_saving_title:
         msg = (
