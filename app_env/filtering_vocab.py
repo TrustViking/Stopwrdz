@@ -36,6 +36,9 @@ class Filtering(BaseClass):
         # Vocabs
         self.vocabs = Vocabs()
 
+        # хранит язык, определённый для последнего обработанного буфера
+        self.last_detected_language: Optional[str] = None
+
 
     def filtering_vocab(self, file_path: str)-> Optional[str]:
         """
@@ -268,6 +271,9 @@ class Filtering(BaseClass):
         """        
         name_method = self.get_current_method_name()
         
+        # обнуляем сохранённый язык перед новой попыткой определения
+        self.last_detected_language = None
+
         # определяем язык буфера титров для выбора языка словаря стоп-слов
         language = self.detection_lang(buffer_title)
         if not language:
@@ -277,8 +283,11 @@ class Filtering(BaseClass):
                     f'\n*language: [{language}]'
                     )
             print(msg)
-            self.logger.error(msg) 
+            self.logger.error(msg)
             return None
+
+        # сохраняем определённый язык, чтобы им могла воспользоваться логика сохранения файла
+        self.last_detected_language = language
         
         msg = (
                 f'\n[{self.cls_name}|{name_method}]'

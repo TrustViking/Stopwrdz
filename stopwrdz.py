@@ -4,7 +4,7 @@
 # subtitle lines produced after punctuation removal.  This script is based off
 # the original TrustViking/Stopwrdz version.
 
-from os.path import split, join
+from os.path import split, join, splitext
 from typing import List, Optional, Dict, Union
 from io import BytesIO
 import re
@@ -285,6 +285,15 @@ class Start(BaseClass):
 
         # формируем уникальный путь для нового файла
         directory, filename = split(file_path)
+        language = self.filtering.last_detected_language
+        if language:
+            base_name, extension = splitext(nfile)
+            # если в конфигурации не указано расширение, используем исходное имя как есть
+            if extension:
+                nfile = f"{base_name}_{language}{extension}"
+            else:
+                nfile = f"{nfile}_{language}"
+
         new_full_path_title = join(directory, nfile)
         new_uniq_full_path_title = self.saving.get_unique_file_path(new_full_path_title)
         full_path_saving_title = self.saving.save_buffer_disk(
