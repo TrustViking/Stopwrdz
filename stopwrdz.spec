@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='stopwrdz_v4',
+    name='stopwrdz',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
