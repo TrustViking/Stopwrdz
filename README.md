@@ -1,75 +1,95 @@
 # Stopwrdz
 
-## Description
+## 🇺🇸 English Description / 🇷🇺 Описание на русском
 
-**Stopwrdz**
+**Stopwrdz** — this is a command-line tool that replaces prohibited or sensitive words in video titles and subtitles. Designed to help content creators comply with platform policies (e.g., TikTok, YouTube).
 
-Stopwrdz is a command-line tool designed to replace prohibited stop words in video titles and captions, specifically tailored for compliance with TikTok's guidelines.
+**Stopwrdz** — это консольный инструмент для замены запрещённых, нежелательных или чувствительных слов в названиях и субтитрах видео. Создан для того, чтобы помогать авторам соблюдать правила платформ (например, TikTok, YouTube).
 
+---
 
-## Key Features
+## 🚀 Key Features / Основные возможности
 
-- Stop-word replacement in video titles
-- Configurable through command line arguments
-- Easily deployable
+- Automatic stop‑word replacement in titles and subtitles  
+  Автоматическая замена стоп‑слов в названиях и субтитрах
 
-## Dependencies
+- Language detection for processing multilingual content  
+  Определение языка для обработки многоязычных материалов
 
-To run this project, ensure you have the following Python libraries installed:
+- Easily configurable behavior through settings  
+  Гибкая конфигурация через файл настроек
 
+- Works from command‑line interface (CLI)  
+  Запуск через командную строку (CLI)
+
+---
+
+## 🔧 Dependencies / Зависимости
+
+Install required libraries / Установите необходимые библиотеки:
 ```bash
 pip install langdetect chardet
 ```
 
-### langdetect
+### 📍 langdetect
+Supports 55 languages / Поддерживает 55 языков:
 https://pypi.org/project/langdetect/
 
-langdetect supports 55 languages out of the box (ISO 639-1 codes):
-```bash
+```
 af, ar, bg, bn, ca, cs, cy, da, de, el, en, es, et, fa, fi, fr, gu, he,
 hi, hr, hu, id, it, ja, kn, ko, lt, lv, mk, ml, mr, ne, nl, no, pa, pl,
 pt, ro, ru, sk, sl, so, sq, sv, sw, ta, te, th, tl, tr, uk, ur, vi, zh-cn, zh-tw
 ```
 
-### chardet
+### 📍 chardet  
+Detects text encoding / Определяет кодировку текста:
 https://pypi.org/project/chardet/
 
-Chardet: The Universal Character Encoding Detector
+---
 
-Detects:
-```bash
-ASCII, UTF-8, UTF-16 (2 variants), UTF-32 (4 variants)
-Big5, GB2312, EUC-TW, HZ-GB-2312, ISO-2022-CN (Traditional and Simplified Chinese)
-EUC-JP, SHIFT_JIS, CP932, ISO-2022-JP (Japanese)
-EUC-KR, ISO-2022-KR, Johab (Korean)
-KOI8-R, MacCyrillic, IBM855, IBM866, ISO-8859-5, windows-1251 (Cyrillic)
-ISO-8859-5, windows-1251 (Bulgarian)
-ISO-8859-1, windows-1252, MacRoman (Western European languages)
-ISO-8859-7, windows-1253 (Greek)
-ISO-8859-8, windows-1255 (Visual and Logical Hebrew)
-TIS-620 (Thai)
-```
+## ▶ Usage / Использование
 
-
-## Usage
-
-### Windows, Linux
-
+### Windows / Linux
 ```bash
 python stopwrdz.py "C:\Users\user\Downloads\title.srt"
-python3 stopwrdz.py C:\Users\user\Downloads\title.srt
+python3 stopwrdz.py /home/user/title.srt
 ```
 
-## Examples
+---
 
-(TO-DO: Add examples demonstrating the tool's features)
+## 🔽 Download Latest Version / Скачать последнюю версию
 
-## License
+👉 English:  
+[Download Stopwrdz for Windows](https://github.com/TrustViking/Stopwrdz/releases/latest/download/stopwrdz_setup.exe)
 
-This project is licensed under the MIT License.
+👉 Русский:  
+[Скачать Stopwrdz для Windows](https://github.com/TrustViking/Stopwrdz/releases/latest/download/stopwrdz_setup.exe)
 
-## Support
+> The installer name never changes; latest version updates automatically.  
+> Имя установщика всегда одинаковое; ссылка ведёт на последнюю версию.
 
-For more information or questions, please feel free to reach out:
+---
 
+## 📜 License / Лицензия
+
+MIT License — свободное использование, изменение и распространение.
+
+---
+
+## 💬 Support / Поддержка
+
+• GitHub Issues (bugs, proposals) / Ошибки и предложения:  
+https://github.com/TrustViking/Stopwrdz/issues
+
+• Author Profile / Профиль автора:  
+https://github.com/TrustViking
+
+---
+
+## 🛠 Roadmap / План развития
+
+- GUI version / Графический интерфейс
+- Automatic GitHub Actions build / Автосборка через GitHub Actions
+- Batch processing / Массовая обработка
+- OBS & YouTube workflow integration / Интеграция с OBS и YouTube
 
