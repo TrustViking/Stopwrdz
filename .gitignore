@@ -13,9 +13,9 @@ __pycache__/
 *.a
 
 # Virtual environments
-venv/
 .venv/
-app_env/
+.venv_*/
+venv/
 .env/
 .env.*
 
@@ -45,8 +45,6 @@ build/
 dist/
 draft/
 setup_install/
-*.spec
-*.iss
 *.exe
 *.msi
 *.zip
