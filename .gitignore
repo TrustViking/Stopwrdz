@@ -1,0 +1,58 @@
+# ===========================
+# Python
+# ===========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# compiled modules / wheels
+*.so
+*.dll
+*.a
+
+# Virtual environments
+venv/
+.venv/
+app_env/
+.env/
+.env.*
+
+
+# ===========================
+# IDE / Workspace
+# ===========================
+.vscode/
+*.code-workspace
+*.idea/
+*.iml
+
+
+# ===========================
+# Logs & Temp
+# ===========================
+logs/
+*.log
+*.tmp
+*.bak
+
+
+# ===========================
+# Build / Dist / Packaging
+# ===========================
+build/
+dist/
+draft/
+setup_install/
+*.spec
+*.iss
+*.exe
+*.msi
+*.zip
+
+
+# ===========================
+# Project-specific
+# ===========================
+start_stopwrdz_venv.ps1
