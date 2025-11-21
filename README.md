@@ -84,12 +84,4 @@ https://github.com/TrustViking/Stopwrdz/issues
 • Author Profile / Профиль автора:  
 https://github.com/TrustViking
 
----
-
-## 🛠 Roadmap / План развития
-
-- GUI version / Графический интерфейс
-- Automatic GitHub Actions build / Автосборка через GitHub Actions
-- Batch processing / Массовая обработка
-- OBS & YouTube workflow integration / Интеграция с OBS и YouTube
 
